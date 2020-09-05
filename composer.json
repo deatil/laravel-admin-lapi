@@ -1,0 +1,39 @@
+{
+    "name": "lake/laravel-admin-lapi",
+    "description": "The laravel-admin-lapi is an addon package for laravel-admin.",
+    "license": "Apache-2.0",
+    "type": "library",
+    "keywords": [
+        "admin",
+        "laravel-admin",
+        "ext",
+        "api",
+        "lapi"
+    ],
+    "homepage": "https://github.com/deatil",
+    "authors": [
+        {
+            "name": "deatil",
+            "email": "deatil@github.com",
+            "homepage": "https://github.com/deatil"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lake\\Admin\\Lapi\\": "src/lapi"
+        },
+        "files": [
+            "src/lapi/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lake\\Admin\\Lapi\\LapiServiceProvider"
+            ]
+        }
+    }
+}
