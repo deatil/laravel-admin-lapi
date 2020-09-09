@@ -17,7 +17,7 @@ $ php artisan admin:import lapi
 
 
 ### 请求示例 
-*  GET: /api/bbb?app_id=API2020090715460852331&name=aakae&nonce_str=XWlID5b4pqArIEnU&sign=45A5CF2CD9C0321BBD93E1B170CB0B8E&timestamp=1599666165
+*  `GET: /api/bbb?app_id=API2020090715460852331&name=aakae&nonce_str=XWlID5b4pqArIEnU&sign=45A5CF2CD9C0321BBD93E1B170CB0B8E&timestamp=1599666165`
 
 
 ### 模块内 `api` 文件方法设置
