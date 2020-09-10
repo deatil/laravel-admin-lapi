@@ -19,7 +19,8 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "encore/laravel-admin": "1.8.*"
     },
     "autoload": {
         "psr-4": {

@@ -16,7 +16,7 @@ use Lake\Admin\Lapi\Model\Config as ConfigModel;
  * @create 2020-9-5
  * @author deatil
  */
-class SettingController
+class Setting
 {
     /**
      * 设置

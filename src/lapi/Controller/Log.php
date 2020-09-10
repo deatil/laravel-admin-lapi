@@ -20,7 +20,7 @@ use Lake\Admin\Lapi\Model\AppLog as AppLogModel;
  * @create 2020-9-8
  * @author deatil
  */
-class LogController
+class Log
 {
     
     /**

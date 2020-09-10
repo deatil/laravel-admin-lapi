@@ -25,7 +25,7 @@ use Lake\Admin\Lapi\Action\Url\Tree as UrlTreeAction;
  * @create 2020-9-7
  * @author deatil
  */
-class UrlController
+class Url
 {
     /**
      * 首页

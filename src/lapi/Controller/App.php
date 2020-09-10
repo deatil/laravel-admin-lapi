@@ -32,7 +32,7 @@ use Lake\Admin\Lapi\Action\App\Lists as UrlListAction;
  * @create 2020-9-5
  * @author deatil
  */
-class AppController
+class App
 {
     
     /*

@@ -31,33 +31,39 @@ class Lapi extends Extension
     {
         parent::routes(function ($router) {
             /* @var \Illuminate\Routing\Router $router */
-            $router->get('lapi/setting', 'Lake\Admin\Lapi\Controller\SettingController@index')->name('admin.lapi.setting');
-            $router->post('lapi/setting', 'Lake\Admin\Lapi\Controller\SettingController@runIndex')->name('admin.lapi.setting');
-            
-            $router->get('lapi/app', 'Lake\Admin\Lapi\Controller\AppController@index')->name('admin.lapi.app.index');
-            $router->get('lapi/app/create', 'Lake\Admin\Lapi\Controller\AppController@create')->name('admin.lapi.app.create');
-            $router->post('lapi/app/create', 'Lake\Admin\Lapi\Controller\AppController@runCreate')->name('admin.lapi.app.create');
-            $router->get('lapi/app/{id}/update', 'Lake\Admin\Lapi\Controller\AppController@update')->name('admin.lapi.app.update');
-            $router->put('lapi/app/update', 'Lake\Admin\Lapi\Controller\AppController@runUpdate')->name('admin.lapi.app.update.run');
-            $router->post('lapi/app/delete', 'Lake\Admin\Lapi\Controller\AppController@runDelete')->name('admin.lapi.app.delete');
-            $router->get('lapi/app/{id}', 'Lake\Admin\Lapi\Controller\AppController@detail')->name('admin.lapi.app.detail');
-            $router->get('lapi/app/{id}/access', 'Lake\Admin\Lapi\Controller\AppController@access')->name('admin.lapi.app.access');
-            $router->put('lapi/app/access', 'Lake\Admin\Lapi\Controller\AppController@runAccess')->name('admin.lapi.app.access.run');
-            $router->get('lapi/app/{id}/access/url', 'Lake\Admin\Lapi\Controller\AppController@accessUrl')->name('admin.lapi.app.access.url');
-            $router->put('lapi/app/{app_id}/access/url/{id}', 'Lake\Admin\Lapi\Controller\AppController@runAccessUrl')->name('admin.lapi.app.access.url.run');
-            
-            $router->get('lapi/url', 'Lake\Admin\Lapi\Controller\UrlController@index')->name('admin.lapi.url.index');
-            $router->get('lapi/url/tree', 'Lake\Admin\Lapi\Controller\UrlController@tree')->name('admin.lapi.url.tree');
-            $router->get('lapi/url/create', 'Lake\Admin\Lapi\Controller\UrlController@create')->name('admin.lapi.url.create');
-            $router->post('lapi/url/create', 'Lake\Admin\Lapi\Controller\UrlController@runCreate')->name('admin.lapi.url.create');
-            $router->get('lapi/url/{id}', 'Lake\Admin\Lapi\Controller\UrlController@detail')->name('admin.lapi.url.detail');
-            $router->get('lapi/url/{id}/update', 'Lake\Admin\Lapi\Controller\UrlController@update')->name('admin.lapi.url.update');
-            $router->put('lapi/url/update', 'Lake\Admin\Lapi\Controller\UrlController@runUpdate')->name('admin.lapi.url.update.run');
-            $router->post('lapi/url/delete', 'Lake\Admin\Lapi\Controller\UrlController@runDelete')->name('admin.lapi.url.delete');
-            
-            $router->get('lapi/log', 'Lake\Admin\Lapi\Controller\LogController@index')->name('admin.lapi.log.index');
-            $router->get('lapi/log/{id}', 'Lake\Admin\Lapi\Controller\LogController@detail')->name('admin.lapi.log.detail');
-            $router->post('lapi/log/clear', 'Lake\Admin\Lapi\Controller\LogController@runClear')->name('admin.lapi.log.clear');
+            $router->group([
+                'prefix'     => 'lapi',
+            ], function ($router) {
+                $router->namespace('\\Lake\\Admin\\Lapi\\Controller')->group(function ($router) {
+                    $router->get('setting', 'Setting@index')->name('admin.lapi.setting');
+                    $router->post('setting', 'Setting@runIndex')->name('admin.lapi.setting');
+                    
+                    $router->get('app', 'App@index')->name('admin.lapi.app.index');
+                    $router->get('app/create', 'App@create')->name('admin.lapi.app.create');
+                    $router->post('app/create', 'App@runCreate')->name('admin.lapi.app.create');
+                    $router->get('app/{id}/update', 'App@update')->name('admin.lapi.app.update');
+                    $router->put('app/update', 'App@runUpdate')->name('admin.lapi.app.update.run');
+                    $router->post('app/delete', 'App@runDelete')->name('admin.lapi.app.delete');
+                    $router->get('app/{id}', 'App@detail')->name('admin.lapi.app.detail');
+                    $router->get('app/{id}/access', 'App@access')->name('admin.lapi.app.access');
+                    $router->put('app/access', 'App@runAccess')->name('admin.lapi.app.access.run');
+                    $router->get('app/{id}/access/url', 'App@accessUrl')->name('admin.lapi.app.access.url');
+                    $router->put('app/{app_id}/access/url/{id}', 'App@runAccessUrl')->name('admin.lapi.app.access.url.run');
+                    
+                    $router->get('url', 'Url@index')->name('admin.lapi.url.index');
+                    $router->get('url/tree', 'Url@tree')->name('admin.lapi.url.tree');
+                    $router->get('url/create', 'Url@create')->name('admin.lapi.url.create');
+                    $router->post('url/create', 'Url@runCreate')->name('admin.lapi.url.create');
+                    $router->get('url/{id}', 'Url@detail')->name('admin.lapi.url.detail');
+                    $router->get('url/{id}/update', 'Url@update')->name('admin.lapi.url.update');
+                    $router->put('url/update', 'Url@runUpdate')->name('admin.lapi.url.update.run');
+                    $router->post('url/delete', 'Url@runDelete')->name('admin.lapi.url.delete');
+                    
+                    $router->get('log', 'Log@index')->name('admin.lapi.log.index');
+                    $router->get('log/{id}', 'Log@detail')->name('admin.lapi.log.detail');
+                    $router->post('log/clear', 'Log@runClear')->name('admin.lapi.log.clear');
+                });
+            });
         });
     }
 
@@ -79,22 +85,22 @@ class Lapi extends Extension
             [
                 'title'     => '授权设置',
                 'icon'      => 'fa-cog',
-                'uri'       => 'lapi/setting',
+                'uri'       => 'setting',
             ],
             [
                 'title'     => '授权列表',
                 'icon'      => 'fa-align-justify',
-                'uri'       => 'lapi/app',
+                'uri'       => 'app',
             ],
             [
                 'title'     => '接口列表',
                 'icon'      => 'fa-clipboard',
-                'uri'       => 'lapi/url',
+                'uri'       => 'url',
             ],
             [
                 'title'     => '接口日志',
                 'icon'      => 'fa-font-awesome',
-                'uri'       => 'lapi/log',
+                'uri'       => 'log',
             ],
         ];
 
@@ -112,6 +118,6 @@ class Lapi extends Extension
         $sqls = str_replace('pre__', $dbPrefix, $sqls);
         DB::unprepared($sqls);
 
-        parent::createPermission('APP授权', 'ext.lapi', 'lapi/*');
+        parent::createPermission('APP授权', 'ext.lapi', '*');
     }
 }
