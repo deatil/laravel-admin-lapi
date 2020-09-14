@@ -49,6 +49,10 @@ body: {
 ~~~
 $this->app->bind(\Lake\Admin\Lapi\Contracts\Response::class, YourResponse::class);
 ~~~
+*  使用json响应
+~~~
+app('lapiJson')->json(boolen $success, int $code, string|null $msg, array|null $data);
+~~~
 
 
 ### 模块内 `api` 文件方法注释
