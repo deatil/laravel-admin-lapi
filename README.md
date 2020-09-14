@@ -42,7 +42,7 @@ body: {
 ~~~
 
 
-### json输出格式自定义 
+### `JSON` 输出格式自定义 
 
 *  如果输出的json格式和需要的格式不一致，可以覆盖绑定默认json响应
 *  可以在 `\App\Providers\AppServiceProvider` 内或者其他服务提供者处添加以下代码
