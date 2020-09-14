@@ -136,12 +136,15 @@ class App
      */
     public function runCreate()
     {
+        $messages = [
+            'email.required' => '名称不能为空',
+        ];
         $validator = Validator::make(request()->all(), [
             'name' => 'required|max:255',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
-            admin_toastr('添加失败', 'error');
+            admin_toastr($validator->errors()->first(), 'error');
             return redirect(route('admin.lapi.app.index'));
         }
         
@@ -261,12 +264,15 @@ class App
      */
     public function runUpdate()
     {
+        $messages = [
+            'email.required' => '名称不能为空',
+        ];
         $validator = Validator::make(request()->all(), [
             'name' => 'required|max:255',
-        ]);
+        ],  $messages);
 
         if ($validator->fails()) {
-            admin_toastr('编辑失败', 'error');
+            admin_toastr($validator->errors()->first(), 'error');
             return redirect(route('admin.lapi.app.index'));
         }
         
@@ -400,7 +406,7 @@ class App
         $form->display('name', '名称');
         
         $Tree = new Tree();
-        $urls = UrlModel::select(['parentid','id','title','url'])
+        $urls = UrlModel::select(['parentid','id','title','url','method'])
             ->orderBy('listorder', 'ASC')
             ->orderBy('add_time', 'ASC')
             ->get()
@@ -410,7 +416,7 @@ class App
         $newUrls = [];
         if (!empty($buildParentUrls)) {
             foreach ($buildParentUrls as $url) {
-                $newUrls[$url['id']] = $url['spacer'].$url['title'].'['.$url['url'].']';
+                $newUrls[$url['id']] = $url['spacer'].$url['title'].' ['.$url['method'].'：'.$url['url'].']';
             }
         }
         

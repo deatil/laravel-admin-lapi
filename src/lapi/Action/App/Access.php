@@ -16,6 +16,6 @@ class Access extends RowAction
     
     public function render()
     {
-        return '<a href="'.route('admin.lapi.app.access', ['id' => $this->id]).'" class="lake-admin-app-deatil">授权接口</a>';
+        return '<a href="'.route('admin.lapi.app.access', ['id' => $this->id]).'" class="lake-admin-app-deatil">接口授权</a>';
     }
 }

@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">配置设置</h3>
+                    <h3 class="box-title">授权设置</h3>
                 </div>
                 
                 <div class="form-horizontal">
@@ -102,10 +102,16 @@
                     </div>
                     
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-info pull-right">保存</button>
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">保存</button>
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            </div>
+                        </div>
                     </div>
-                    
+            
                 </div>
             </div>
         </div>

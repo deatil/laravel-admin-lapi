@@ -3,6 +3,7 @@
 namespace Lake\Admin\Lapi;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 use Encore\Admin\Admin;
 use Encore\Admin\Auth\Database\Menu;
@@ -69,55 +70,8 @@ class Lapi extends Extension
 
     public static function import()
     {
-        $lastOrder = Menu::max('order');
-
-        $root = [
-            'parent_id' => 0,
-            'order'     => $lastOrder++,
-            'title'     => 'APP授权',
-            'icon'      => 'fa-th-list',
-            'uri'       => '',
-        ];
-
-        $root = Menu::create($root);
-
-        $menus = [
-            [
-                'title'     => '授权设置',
-                'icon'      => 'fa-cog',
-                'uri'       => 'setting',
-            ],
-            [
-                'title'     => '授权列表',
-                'icon'      => 'fa-align-justify',
-                'uri'       => 'app',
-            ],
-            [
-                'title'     => '接口列表',
-                'icon'      => 'fa-clipboard',
-                'uri'       => 'url',
-            ],
-            [
-                'title'     => '接口日志',
-                'icon'      => 'fa-font-awesome',
-                'uri'       => 'log',
-            ],
-        ];
-
-        foreach ($menus as $menu) {
-            $menu['parent_id'] = $root->id;
-            $menu['order'] = $lastOrder++;
-
-            Menu::create($menu);
-        }
+        Artisan::call('lapi:install');
         
-        // 执行数据库
-        $installSqlFile = __DIR__.'/../resources/sql/install.sql';
-        $dbPrefix = DB::getConfig('prefix');
-        $sqls = file_get_contents($installSqlFile);
-        $sqls = str_replace('pre__', $dbPrefix, $sqls);
-        DB::unprepared($sqls);
-
         parent::createPermission('APP授权', 'ext.lapi', '*');
     }
 }

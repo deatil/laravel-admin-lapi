@@ -227,7 +227,12 @@ class Lapi
      */
     public function errorJson($msg = null, $code = 1, $data = []) 
     {
-        return $this->httpResponse(false, $code, $msg, $data);
+        return app('lapiJson')->json([
+            'success' => false,
+            'code' => $code,
+            'msg' => $msg,
+            'data' => $data,
+        ]);
     }
     
     /*
@@ -238,36 +243,11 @@ class Lapi
      */
     public function successJson($msg = '获取成功', $data = null, $code = 0) 
     {
-        return $this->httpResponse(true, $code, $msg, $data);
+        return app('lapiJson')->json([
+            'success' => true,
+            'code' => $code,
+            'msg' => $msg,
+            'data' => $data,
+        ]);
     }
-    
-    /*
-     * 公用
-     *
-     * @create 2020-8-12
-     * @author deatil
-     */
-    public function httpResponse($success = true, $code, $msg = "", $data = [])
-    {
-        $result['success'] = $success;
-        $result['code'] = $code;
-        $msg ? $result['msg'] = $msg : null;
-        $data ? $result['data'] = $data : null;
-        
-        $app = config('lapi.app');
-
-        $header = [];
-        if ($app['allow_origin'] == 1) {
-            $header['Access-Control-Allow-Origin']  = '*';
-            $header['Access-Control-Allow-Headers'] = 'X-Requested-With,X_Requested_With,Content-Type';
-            $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS';
-        }
-        $header['content-type']  = 'application/json';
-        
-        $result = json_encode($result, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
-        
-        $response = response($result, 200, $header);
-        throw new HttpResponseException($response);
-    }
-
 }

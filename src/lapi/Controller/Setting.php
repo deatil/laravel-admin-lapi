@@ -44,8 +44,8 @@ EOT;
         Admin::script($script);
             
         return $content
-            ->header('配置设置')
-            ->description('配置设置')
+            ->header('授权设置')
+            ->description('授权设置')
             ->body(view('lapi::setting.index', [
                 'setting' => $setting,
             ])

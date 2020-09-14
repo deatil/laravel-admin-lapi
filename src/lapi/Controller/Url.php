@@ -189,6 +189,15 @@ class Url
      */
     public function runCreate()
     {
+        $messages = [
+            'email.required' => '名称不能为空',
+            'email.max' => '名称的最大长度为：:max',
+            'slug.required' => '地址标识不能为空',
+            'slug.max' => '地址标识的最大长度为：:max',
+            'url.required' => '请求地址不能为空',
+            'url.max' => '请求地址的最大长度为：:max',
+            'method.required' => '请求类型不能为空',
+        ];
         $validator = Validator::make(request()->all(), [
             'title' => 'required|max:200',
             'slug' => 'required|max:50',
@@ -197,10 +206,10 @@ class Url
                 'required',
                 Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
             ],
-        ]);
+        ],  $messages);
 
         if ($validator->fails()) {
-            admin_toastr('添加失败', 'error');
+            admin_toastr($validator->errors()->first(), 'error');
             return redirect(route('admin.lapi.url.index'));
         }
         
@@ -221,7 +230,6 @@ class Url
         ];
         
         $UrlModel = (new UrlModel);
-        
         foreach ($data as $column => $value) {
             $UrlModel->setAttribute($column, $value);
         }
@@ -327,6 +335,18 @@ class Url
      */
     public function runUpdate()
     {
+        $messages = [
+            'email.required' => '名称不能为空',
+            'email.max' => '名称的最大长度为：:max',
+            'slug.required' => '地址标识不能为空',
+            'slug.max' => '地址标识的最大长度为：:max',
+            'url.required' => '请求地址不能为空',
+            'url.max' => '请求地址的最大长度为：:max',
+            'method.required' => '请求类型不能为空',
+            'listorder.required' => '排序不能为空',
+            'listorder.min' => '排序的最小长度为：:min',
+            'listorder.max' => '排序的最大长度为：:max',
+        ];
         $validator = Validator::make(request()->all(), [
             'title' => 'required|max:200',
             'slug' => 'required|max:50',
@@ -336,10 +356,10 @@ class Url
                 Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
             ],
             'listorder' => 'required|min:1|max:5',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
-            admin_toastr('编辑失败', 'error');
+            admin_toastr($validator->errors()->first(), 'error');
             return redirect(route('admin.lapi.url.index'));
         }
         
@@ -384,6 +404,7 @@ class Url
         $show = new Show(UrlModel::findOrFail($id));
         $show->id('ID');
         $show->title('名称');
+        $show->slug('链接标识');
         $show->url('请求链接');
         $show->method('请求方式');
         $show->request('请求字段');

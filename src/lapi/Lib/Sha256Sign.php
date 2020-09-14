@@ -5,8 +5,8 @@ namespace Lake\Admin\Lapi\Lib;
 /**
  * sha256签名
  * 
+ * @create 2020-9-5
  * @author deatil
- * @create 2020-8-12
  */
 class Sha256Sign 
 {
@@ -15,7 +15,7 @@ class Sha256Sign
     /**
      * 单例
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     public static function getInstance()
@@ -32,7 +32,7 @@ class Sha256Sign
      * @param $data
      * @return string
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     public function makeSign($data, $key = '') 
@@ -48,7 +48,7 @@ class Sha256Sign
      * @param $data
      * @return string
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     public function makeSignContent($data)
@@ -68,7 +68,7 @@ class Sha256Sign
      * @param int $length
      * @return string
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     public function createNonceStr($length = 16)
@@ -84,7 +84,7 @@ class Sha256Sign
     /**
      * 禁止克隆
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     private function __construct()   
@@ -94,7 +94,7 @@ class Sha256Sign
     /**
      * 禁止克隆
      *
-     * @create 2020-8-12
+     * @create 2020-9-5
      * @author deatil
      */
     private function __clone()  
