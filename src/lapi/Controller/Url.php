@@ -18,6 +18,7 @@ use Lake\Admin\Lapi\Action\Url\Delete as UrlDeleteAction;
 use Lake\Admin\Lapi\Action\Url\Detail as UrlDetailAction;
 use Lake\Admin\Lapi\Action\Url\Update as UrlUpdateAction;
 use Lake\Admin\Lapi\Action\Url\Tree as UrlTreeAction;
+use Lake\Admin\Lapi\Action\Url\BatchDestroy as UrlBatchDestroyAction;
 
 /*
  * 接口列表
@@ -87,6 +88,14 @@ class Url
             $actions->add(new UrlDetailAction($actions->getKey()));
             $actions->add(new UrlUpdateAction($actions->getKey()));
             $actions->add(new UrlDeleteAction($actions->getKey()));
+        });
+        
+        $grid->tools(function ($tools) {
+            $tools->batch(function ($batch) {
+                $batch->disableDelete();
+                
+                $batch->add('批量删除', new UrlBatchDestroyAction());
+            });
         });
         
         $grid->model()->orderBy('add_time', 'ASC');
@@ -467,6 +476,37 @@ class Url
         }
         
         return admin_success('删除成功', '删除数据成功');
+    }
+
+    /**
+     * 批量删除
+     *
+     * @create 2020-9-14
+     * @author deatil
+     */
+    public function runDestroy()
+    {
+        $ids = request()->post('ids');
+        if (empty($ids)) {
+            return admin_error('批量删除失败', '删除数据失败');
+        }
+        
+        $ids = explode(',', $ids);
+        
+        foreach ($ids as $id) {
+            $count = UrlModel::where('parentid', $id)
+                ->count();
+            if ($count > 0) {
+                return admin_error('批量删除失败', '该父级还有子级数据，请删除子级后重试');
+            }
+        }
+        
+        $status = UrlModel::whereIn('id', $ids)->delete();
+        if ($status === false) {
+            return admin_error('批量删除失败', '批量删除数据失败');
+        }
+        
+        return admin_success('批量删除成功', '批量删除数据成功');
     }
 
 }

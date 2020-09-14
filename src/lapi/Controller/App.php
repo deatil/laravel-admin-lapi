@@ -96,6 +96,13 @@ class App
             $actions->add(new AppAccessUrlAction($actions->getKey()));
         });
         
+        $grid->disableRowSelector();
+        $grid->tools(function ($tools) {
+            $tools->batch(function ($batch) {
+                $batch->disableDelete();
+            });
+        });
+        
         return $content
             ->header('授权列表')
             ->description('App授权列表')

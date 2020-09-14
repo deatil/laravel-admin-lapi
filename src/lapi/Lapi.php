@@ -59,6 +59,7 @@ class Lapi extends Extension
                     $router->get('url/{id}/update', 'Url@update')->name('admin.lapi.url.update');
                     $router->put('url/update', 'Url@runUpdate')->name('admin.lapi.url.update.run');
                     $router->post('url/delete', 'Url@runDelete')->name('admin.lapi.url.delete');
+                    $router->post('url/destroy', 'Url@runDestroy')->name('admin.lapi.url.destroy');
                     
                     $router->get('log', 'Log@index')->name('admin.lapi.log.index');
                     $router->get('log/{id}', 'Log@detail')->name('admin.lapi.log.detail');
