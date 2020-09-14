@@ -225,14 +225,9 @@ class Lapi
      * @create 2020-8-12
      * @author deatil
      */
-    public function errorJson($msg = null, $code = 1, $data = []) 
+    public function errorJson($msg = null, $code = 1, $data = null) 
     {
-        return app('lapiJson')->json([
-            'success' => false,
-            'code' => $code,
-            'msg' => $msg,
-            'data' => $data,
-        ]);
+        return app('lapiJson')->json(false, $code, $msg, $data);
     }
     
     /*
@@ -243,11 +238,6 @@ class Lapi
      */
     public function successJson($msg = '获取成功', $data = null, $code = 0) 
     {
-        return app('lapiJson')->json([
-            'success' => true,
-            'code' => $code,
-            'msg' => $msg,
-            'data' => $data,
-        ]);
+        return app('lapiJson')->json(true, $code, $msg, $data);
     }
 }

@@ -12,11 +12,15 @@ interface Response
 {
     /*
      * 响应json输出
-     * $arr = [$success, $code, $msg, $data];
+     * @param boolen $success
+     * @param int $code
+     * @param string|null $msg
+     * @param array|null $data
+     * @return string json
      *
      * @create 2020-9-13
      * @author deatil
      */
-    public function json($arr);
+    public function json($success, $code, $msg, $data);
 
 }

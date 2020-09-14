@@ -16,22 +16,17 @@ class Response implements ResponseContracts
 {
     /*
      * 响应json输出
-     * $arr = [$success, $code, $msg, $data];
+     * @param boolen $success
+     * @param int $code
+     * @param string|null $msg
+     * @param array|null $data
+     * @return string json
      *
      * @create 2020-9-13
      * @author deatil
      */
-    public function json($arr) 
+    public function json($success, $code = 99999, $msg = '', $data = []) 
     {
-        $newArr = array_merge([
-            'success' => true,
-            'code' => 99999,
-            'msg' => '',
-            'data' => [],
-        ], $arr);
-        
-        extract($newArr);
-        
         $result['success'] = $success;
         $result['code'] = $code;
         $msg ? $result['msg'] = $msg : null;
