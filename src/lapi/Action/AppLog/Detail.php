@@ -16,6 +16,6 @@ class Detail extends RowAction
     
     public function render()
     {
-        return '<a href="'.route('admin.lapi.log.detail', ['id' => $this->id]).'" class="lake-admin-log-deatil">预览</a>';
+        return '<a href="'.route('admin.lapi.log.detail', ['id' => $this->id]).'" class="lake-admin-log-deatil">详情</a>';
     }
 }
