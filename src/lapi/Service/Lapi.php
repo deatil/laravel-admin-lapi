@@ -27,7 +27,7 @@ class Lapi
      * @create 2020-9-7
      * @author deatil
      */
-    public function checkApiSign()
+    public function checkApi()
     {
         // api设置
         $appConfig = ConfigModel::getList();

@@ -24,7 +24,7 @@ class Lapi
      */
     public function handle($request, Closure $next)
     {
-        $this->checkApiSign();
+        $this->checkApi();
         
         return $next($request);
     }

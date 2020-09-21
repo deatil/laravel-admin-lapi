@@ -18,9 +18,9 @@ trait Lapi
      * @create 2020-9-7
      * @author deatil
      */
-    protected function checkApiSign()
+    protected function checkApi()
     {
-        LapiFacade::checkApiSign();
+        LapiFacade::checkApi();
     }
     
     /*

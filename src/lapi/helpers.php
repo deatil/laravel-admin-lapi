@@ -10,13 +10,13 @@ if (!function_exists('lapi_check_api_sign')) {
      * @author deatil
      */
     function lapi_check_api_sign() {
-        return LapiFacade::checkApiSign();
+        return LapiFacade::checkApi();
     }
 }
 
 if (!function_exists('lapi_success_json')) {
     /*
-     * 检测签名
+     * 返回成功JSON
      *
      * @create 2020-9-5
      * @author deatil
@@ -28,7 +28,7 @@ if (!function_exists('lapi_success_json')) {
 
 if (!function_exists('lapi_error_json')) {
     /*
-     * 检测签名
+     * 返回错误JSON
      *
      * @create 2020-9-5
      * @author deatil
