@@ -9,7 +9,7 @@
 ### 签名算法
 
 *  第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串stringA。 
-*  第二步，在stringA最后拼接上key（例如：key=keyValue）得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。
+*  第二步，在stringA最后拼接上key（即key=keyValue）得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。
 *  特别注意以下重要规则： 
 ~~~
 ◆ 参数名ASCII码从小到大排序（字典序）；
