@@ -2,14 +2,14 @@
 
 use Lake\Admin\Lapi\Facade\Lapi as LapiFacade;
 
-if (!function_exists('lapi_check_api_sign')) {
+if (!function_exists('lapi_check_api')) {
     /*
      * 检测签名
      *
      * @create 2020-9-5
      * @author deatil
      */
-    function lapi_check_api_sign() {
+    function lapi_check_api() {
         return LapiFacade::checkApi();
     }
 }
