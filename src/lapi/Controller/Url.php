@@ -51,7 +51,17 @@ class Url
         $grid->title('名称');
         $grid->column('路由')
             ->display(function () {
-                return "<span class=\"label label-primary\">$this->method</span><code>$this->url</code>";
+                $methodColors = [
+                    'GET'    => 'green',
+                    'HEAD'   => 'gray',
+                    'POST'   => 'blue',
+                    'PUT'    => 'yellow',
+                    'DELETE' => 'red',
+                    'PATCH'  => 'aqua',
+                    'OPTIONS'=> 'light-blue',
+                ];
+                
+                return "<span class=\"label bg-{$methodColors[$this->method]}\">{$this->method}</span><code>{$this->url}</code>";
             });
         $grid->status('状态')
             ->display(function ($name) {

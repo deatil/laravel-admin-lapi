@@ -18,6 +18,7 @@
 ◆ 验证调用返回或服务器主动通知签名时，传送的sign参数不参与签名，将生成的签名与该sign值作校验；
 ◆ 接口可能增加字段，验证签名时必须支持增加的扩展字段 
 ~~~
+*  签名数据注意：默认签名数据包括 `post` 及 `get` 数据集合，即签名数据为 `request()->all()`，如果
 
 
 ### 使用方法 
@@ -26,12 +27,12 @@
 ~~~
 composer require lake/laravel-admin-lapi
 
-> php artisan admin:import lapi
+php artisan admin:import lapi
 ~~~
 
 *  导入路由信息，解析api控制器注释
 ~~~
-> php artisan lapi:import-route
+php artisan lapi:import-route
 ~~~
 
 
@@ -64,7 +65,7 @@ $this->app->bind(\Lake\Admin\Lapi\Contracts\Response::class, YourResponse::class
 ~~~
 *  使用json响应
 ~~~
-app('lapiJson')->json(boolen $success, int $code, string|null $msg, array|null $data);
+app('lapi.json')->json(boolen $success, int $code, string|null $msg, array|null $data);
 ~~~
 
 
@@ -111,6 +112,8 @@ class Index
     // 初始化
     protected function __contruct()
     {
+        // $this->withData($data); // 自定义签名数据，非必须
+        
         $this->checkApi();
     }
 }
@@ -126,6 +129,7 @@ class Index
 ~~~
 api.lapi
 ~~~
+注意：如需自定义签名数据，可以在使用中间件之前添加 `app('lapi.check')->withData($data);`
 
 
 ### 开源协议

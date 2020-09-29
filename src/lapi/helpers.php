@@ -1,6 +1,6 @@
 <?php
 
-use Lake\Admin\Lapi\Facade\Lapi as LapiFacade;
+use Lake\Admin\Lapi\Facade\ApiCheck as ApiCheckFacade;
 
 if (!function_exists('lapi_check_api_sign')) {
     /*
@@ -10,7 +10,7 @@ if (!function_exists('lapi_check_api_sign')) {
      * @author deatil
      */
     function lapi_check_api_sign() {
-        return LapiFacade::checkApi();
+        return ApiCheckFacade::checkApi();
     }
 }
 
@@ -22,7 +22,7 @@ if (!function_exists('lapi_success_json')) {
      * @author deatil
      */
     function lapi_success_json($msg = '获取成功', $data = null, $code = 0) {
-        return LapiFacade::successJson($msg, $data, $code);
+        return ApiCheckFacade::successJson($msg, $data, $code);
     }
 }
 
@@ -34,6 +34,6 @@ if (!function_exists('lapi_error_json')) {
      * @author deatil
      */
     function lapi_error_json($code = null, $msg = 1, $data = []) {
-        return LapiFacade::errorJson($code, $msg, $msg);
+        return ApiCheckFacade::errorJson($code, $msg, $msg);
     }
 }

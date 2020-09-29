@@ -6,6 +6,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Lake\Admin\Lapi\Lib\Sign;
 use Lake\Admin\Lapi\Lib\Sha256Sign;
+use Lake\Admin\Lapi\Contracts\ApiCheck as ApiCheckContract;
 
 use Lake\Admin\Lapi\Model\App as AppModel;
 use Lake\Admin\Lapi\Model\AppLog as AppLogModel;
@@ -19,15 +20,61 @@ use Lake\Admin\Lapi\Model\UrlAccess as UrlAccessModel;
  * @create 2020-9-7
  * @author deatil
  */
-class Lapi
+class ApiAuth implements ApiCheckContract
 {
+    /**
+     * $param array
+     */
+    protected $data = null;
+    
+    /*
+     * 设置数据
+     *
+     * @param array $data
+     * @return self
+     */
+    public function withData($data = [])
+    {
+        $this->data = $data;
+        return $this;
+    }
+    
+    /*
+     * 获取数据
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+    
+    /*
+     * 获取默认数据
+     * @return array
+     */
+    public function getDefaultData()
+    {
+        return request()->all();
+    }
+    
+    /*
+     * 检测API
+     * @return array
+     */
+    public function checkApi()
+    {
+        $this->checkApiSign();
+        
+        $this->checkUrlAuth();
+    }
+    
     /*
      * 检测签名
      *
      * @create 2020-9-7
      * @author deatil
      */
-    public function checkApi()
+    public function checkApiSign()
     {
         // api设置
         $appConfig = ConfigModel::getList();
@@ -40,7 +87,10 @@ class Lapi
             'lapi.app_config' => $appConfig,
         ]);
         
-        $data = request()->all();
+        $data = $this->getData();
+        if (is_null($data)) {
+            $data = $this->getDefaultData();
+        }
         if (empty($data)) {
             return $this->errorJson("数据错误", 99);
         }
@@ -128,8 +178,6 @@ class Lapi
         config([
             'lapi.app' => $app,
         ]);
-        
-        $this->checkUrlApiAuth();
     }
     
     /*
@@ -138,22 +186,19 @@ class Lapi
      * @create 2020-9-7
      * @author deatil
      */
-    public function checkUrlApiAuth()
+    public function checkUrlAuth()
     {
         $requestMethod = request()->getMethod();
         $requestUrl = \Route::currentRouteName();
         
         $requestUrlInfo = UrlModel::where([
                 'slug' => $requestUrl,
+                'method' => strtoupper($requestMethod),
             ])
             ->first();
         if (empty($requestUrlInfo) 
             || $requestUrlInfo['status'] != 1
         ) {
-            return $this->errorJson("该链接拒绝访问", 99);
-        }
-        
-        if ($requestUrlInfo['method'] != strtoupper($requestMethod)) {
             return $this->errorJson("该链接拒绝访问", 99);
         }
         
@@ -227,7 +272,7 @@ class Lapi
      */
     public function errorJson($msg = null, $code = 1, $data = null) 
     {
-        return app('lapiJson')->json(false, $code, $msg, $data);
+        return app('lapi.json')->json(false, $code, $msg, $data);
     }
     
     /*
@@ -238,6 +283,6 @@ class Lapi
      */
     public function successJson($msg = '获取成功', $data = null, $code = 0) 
     {
-        return app('lapiJson')->json(true, $code, $msg, $data);
+        return app('lapi.json')->json(true, $code, $msg, $data);
     }
 }

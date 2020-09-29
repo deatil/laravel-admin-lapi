@@ -79,10 +79,10 @@ class ImportRoute extends Command
             }
             
             if (empty($docInfo['description'])) {
-                $docInfo['description'] = print_r([
+                $docInfo['description'] = json_encode([
                         'action' => $route['action'],
                         'middleware' => implode(',', $route['middleware']->toArray()),
-                    ], true);
+                    ]);
             }
             if (empty($docInfo['title'])) {
                 $docInfo['title'] = $route['uri'];

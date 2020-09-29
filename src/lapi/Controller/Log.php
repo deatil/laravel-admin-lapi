@@ -44,7 +44,17 @@ class Log
         $grid->api('接口标识')->label('info');
         $grid->column('请求链接')
             ->display(function () {
-                return "<span class=\"badge bg-green\">{$this->method}</span><code>{$this->url}</code>";
+                $methodColors = [
+                    'GET'    => 'green',
+                    'HEAD'   => 'gray',
+                    'POST'   => 'blue',
+                    'PUT'    => 'yellow',
+                    'DELETE' => 'red',
+                    'PATCH'  => 'aqua',
+                    'OPTIONS'=> 'light-blue',
+                ];
+                
+                return "<span class=\"label bg-{$methodColors[$this->method]}\">{$this->method}</span><code>{$this->url}</code>";
             })
             ->style("max-width:200px;word-break:break-all;");
         $grid->add_time('添加时间')

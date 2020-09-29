@@ -4,7 +4,7 @@ namespace Lake\Admin\Lapi\Http;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use Lake\Admin\Lapi\Contracts\Response as ResponseContracts;
+use Lake\Admin\Lapi\Contracts\Response as ResponseContract;
 
 /*
  * 响应
@@ -12,7 +12,7 @@ use Lake\Admin\Lapi\Contracts\Response as ResponseContracts;
  * @create 2020-9-13
  * @author deatil
  */
-class Response implements ResponseContracts
+class Response implements ResponseContract
 {
     /*
      * 响应json输出

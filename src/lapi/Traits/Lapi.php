@@ -2,7 +2,7 @@
 
 namespace Lake\Admin\Lapi\Traits;
 
-use Lake\Admin\Lapi\Facade\Lapi as LapiFacade;
+use Lake\Admin\Lapi\Facade\ApiCheck as ApiCheckFacade;
 
 /*
  * API检测
@@ -13,6 +13,17 @@ use Lake\Admin\Lapi\Facade\Lapi as LapiFacade;
 trait Lapi
 {
     /*
+     * 设置数据
+     *
+     * @create 2020-9-28
+     * @author deatil
+     */
+    protected function withData($data = [])
+    {
+        ApiCheckFacade::withData($data);
+    }
+    
+    /*
      * 检测签名
      *
      * @create 2020-9-7
@@ -20,7 +31,7 @@ trait Lapi
      */
     protected function checkApi()
     {
-        LapiFacade::checkApi();
+        ApiCheckFacade::checkApi();
     }
     
     /*
@@ -31,7 +42,7 @@ trait Lapi
      */
     protected function successJson($msg = '获取成功', $data = null, $code = 0) 
     {
-        return LapiFacade::successJson($msg, $data, $code);
+        return ApiCheckFacade::successJson($msg, $data, $code);
     }
     
     /*
@@ -42,7 +53,7 @@ trait Lapi
      */
     protected function errorJson($msg = null, $code = 1, $data = []) 
     {
-        return LapiFacade::errorJson($msg, $code, $data);
+        return ApiCheckFacade::errorJson($msg, $code, $data);
     }
     
 }
