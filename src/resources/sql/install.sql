@@ -63,7 +63,8 @@ CREATE TABLE `pre__lapi_url` (
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `add_ip` varchar(50) CHARACTER SET utf8mb4 DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `url_method` (`url`, `method`),
+  KEY `url` (`url`),
+  KEY `method` (`method`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='请求URL表';
 

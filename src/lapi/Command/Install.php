@@ -37,7 +37,7 @@ class Install extends Command
             'order'     => $lastOrder++,
             'title'     => 'APP授权',
             'icon'      => 'fa-th-list',
-            'uri'       => '',
+            'uri'       => 'lapi',
         ];
 
         $root = Menu::create($root);

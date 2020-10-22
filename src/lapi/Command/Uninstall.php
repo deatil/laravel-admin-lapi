@@ -44,7 +44,7 @@ class Uninstall extends Command
         $sqls = str_replace('pre__', $dbPrefix, $sqls);
         DB::unprepared($sqls);
         
-        $msg = Menu::where('uri', 'like', 'lapi/%')
+        $msg = Menu::where('uri', 'like', 'lapi%')
                 ->delete();
         $msg = Permission::where('slug', 'like', 'ext.lapi')
                 ->delete();
