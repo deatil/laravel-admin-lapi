@@ -179,6 +179,7 @@ class Url
                 'PUT' => 'PUT',
                 'DELETE' => 'DELETE',
                 'PATCH' => 'PATCH',
+                'HEAD' => 'HEAD',
             ])
             ->value('GET')
             ->rules('required');
@@ -223,7 +224,7 @@ class Url
             'url' => 'required|max:500',
             'method' => [
                 'required',
-                Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
+                Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']),
             ],
         ],  $messages);
 
@@ -316,6 +317,7 @@ class Url
                 'PUT' => 'PUT',
                 'DELETE' => 'DELETE',
                 'PATCH' => 'PATCH',
+                'HEAD' => 'HEAD',
             ])
             ->rules('required');
         $form->textarea('request', '请求字段')
@@ -372,7 +374,7 @@ class Url
             'url' => 'required|max:500',
             'method' => [
                 'required',
-                Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
+                Rule::in(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']),
             ],
             'listorder' => 'required|min:1|max:5',
         ], $messages);
