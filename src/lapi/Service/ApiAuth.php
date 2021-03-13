@@ -148,32 +148,25 @@ class ApiAuth implements ApiCheckContract
             $checkSign = Sign::getInstance();
         }
 
-        if ($app['sign_postion'] == 'header') {
-            $sign = request()->header('sign');
-            if (!isset($sign)) {
-                return $this->errorJson("签名错误", 99);
+        // 签名检测
+        if ($app['is_check'] == 1) {
+            if ($app['sign_postion'] == 'header') {
+                $sign = request()->header('sign');
+                if (!isset($sign)) {
+                    return $this->errorJson("签名错误", 99);
+                }
+            } else {
+                if (!isset($data['sign'])) {
+                    return $this->errorJson("签名错误", 99);
+                }
+                
+                $sign = $data['sign'];
             }
-        } else {
-            if (!isset($data['sign'])) {
+
+            if (empty($sign)) {
                 return $this->errorJson("签名错误", 99);
             }
             
-            $sign = $data['sign'];
-        }
-
-        if (empty($sign)) {
-            return $this->errorJson("签名错误", 99);
-        }
-        
-        // 防止重放
-        $cacheCheckId = md5($nonceStr.$timestamp.$sign);
-        if (Cache::get($cacheCheckId)) {
-            return $this->errorJson("重复提交", 99);
-        }
-        Cache::add($cacheCheckId, time(), 60 * 30);
-
-        // 签名检测
-        if ($app['is_check'] == 1) {
             $checkSignData = $data;
             $checkSignKey = $app['app_secret'];
             $checkSignString = $checkSign->makeSign($checkSignData, $checkSignKey);
@@ -181,7 +174,17 @@ class ApiAuth implements ApiCheckContract
             if ($checkSignString != $sign) {
                 return $this->errorJson("授权验证失败", 99);
             }
+            
+            $cacheCheckId = md5($nonceStr.$timestamp.$sign);
+        } else {
+            $cacheCheckId = md5($nonceStr.$timestamp);
         }
+        
+        // 防止重放
+        if (Cache::get($cacheCheckId)) {
+            return $this->errorJson("重复提交", 99);
+        }
+        Cache::add($cacheCheckId, time(), 60 * 30);
         
         config([
             'lapi.app' => $app,
