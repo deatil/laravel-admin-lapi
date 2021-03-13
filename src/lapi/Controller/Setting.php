@@ -43,13 +43,14 @@ EOT;
         
         Admin::script($script);
             
+        $body = view('lapi::setting.index', [
+                'setting' => $setting,
+            ])
+            ->render();
         return $content
             ->header('授权设置')
             ->description('授权设置')
-            ->body(view('lapi::setting.index', [
-                'setting' => $setting,
-            ])
-            ->render());
+            ->body($body);
     }
     
     /**

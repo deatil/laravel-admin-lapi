@@ -419,7 +419,7 @@ class App
             ->get()
             ->toArray();
         $data = $Tree->withData($urls)->buildArray(0);
-        $buildParentUrls = $Tree->buildFormatList($data, 'title');
+        $buildParentUrls = $Tree->buildFormatList($data);
         $newUrls = [];
         if (!empty($buildParentUrls)) {
             foreach ($buildParentUrls as $url) {

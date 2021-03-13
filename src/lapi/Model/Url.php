@@ -15,7 +15,8 @@ use Encore\Admin\Traits\ModelTree;
  */
 class Url extends Model
 {
-    use ModelTree,AdminBuilder;
+    use ModelTree,
+        AdminBuilder;
     
     protected $table = 'lapi_url';
     protected $keyType = 'string';
@@ -27,6 +28,7 @@ class Url extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+        
         $this->setParentColumn('parentid');
         $this->setOrderColumn('listorder');
         $this->setTitleColumn('title');

@@ -2,6 +2,7 @@
 
 namespace Lake\Admin\Lapi\Service;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Lake\Admin\Lapi\Lib\Sign;
@@ -115,57 +116,64 @@ class ApiAuth implements ApiCheckContract
         if (empty($app) || !$app['status']) {
             return $this->errorJson("授权错误", 97);
         }
-
-        // 签名检测
-        if ($app['is_check'] == 1) {
-            $userAgent = request()->server('HTTP_USER_AGENT');
-            if (empty($userAgent)) {
-                return $this->errorJson("客户端错误", 99);
-            }
         
-            $nonceStr = $data['nonce_str'];
-            if (empty($nonceStr)) {
-                return $this->errorJson("nonce_str错误", 99);
-            }
-            if (strlen($nonceStr) != 16) {
-                return $this->errorJson("nonce_str格式错误", 99);
-            }
+        $userAgent = request()->server('HTTP_USER_AGENT');
+        if (empty($userAgent)) {
+            return $this->errorJson("客户端错误", 99);
+        }
+    
+        $nonceStr = $data['nonce_str'];
+        if (empty($nonceStr)) {
+            return $this->errorJson("nonce_str错误", 99);
+        }
+        if (strlen($nonceStr) != 16) {
+            return $this->errorJson("nonce_str格式错误", 99);
+        }
 
-            $timestamp = $data['timestamp'];
-            if (empty($timestamp)) {
-                return $this->errorJson("时间戳错误", 99);
-            }
-            if (strlen($timestamp) != 10) {
-                return $this->errorJson("时间戳格式错误", 99);
-            }
-            if (time() - $timestamp > (60 * 30)) {
-                return $this->errorJson("时间错误，请确认你的时间为正确的北京时间", 99);
-            }
+        $timestamp = $data['timestamp'];
+        if (empty($timestamp)) {
+            return $this->errorJson("时间戳错误", 99);
+        }
+        if (strlen($timestamp) != 10) {
+            return $this->errorJson("时间戳格式错误", 99);
+        }
+        if (time() - ((int) $timestamp) > (60 * 30)) {
+            return $this->errorJson("时间错误，请确认你的时间为正确的北京时间", 99);
+        }
 
-            // 验证签名
-            if ($app['check_type'] == 'SHA256') {
-                $checkSign = Sha256Sign::getInstance();
-            } else {
-                $checkSign = Sign::getInstance();
-            }
+        // 验证签名
+        if ($app['check_type'] == 'SHA256') {
+            $checkSign = Sha256Sign::getInstance();
+        } else {
+            $checkSign = Sign::getInstance();
+        }
 
-            if ($app['sign_postion'] == 'header') {
-                $sign = request()->header('sign');
-                if (!isset($sign)) {
-                    return $this->errorJson("签名错误", 99);
-                }
-            } else {
-                if (!isset($data['sign'])) {
-                    return $this->errorJson("签名错误", 99);
-                }
-                
-                $sign = $data['sign'];
+        if ($app['sign_postion'] == 'header') {
+            $sign = request()->header('sign');
+            if (!isset($sign)) {
+                return $this->errorJson("签名错误", 99);
             }
-
-            if (empty($sign)) {
+        } else {
+            if (!isset($data['sign'])) {
                 return $this->errorJson("签名错误", 99);
             }
             
+            $sign = $data['sign'];
+        }
+
+        if (empty($sign)) {
+            return $this->errorJson("签名错误", 99);
+        }
+        
+        // 防止重放
+        $cacheCheckId = md5($nonceStr.$timestamp.$sign);
+        if (Cache::get($cacheCheckId)) {
+            return $this->errorJson("重复提交", 99);
+        }
+        Cache::add($cacheCheckId, time(), 60 * 30);
+
+        // 签名检测
+        if ($app['is_check'] == 1) {
             $checkSignData = $data;
             $checkSignKey = $app['app_secret'];
             $checkSignString = $checkSign->makeSign($checkSignData, $checkSignKey);
@@ -210,21 +218,6 @@ class ApiAuth implements ApiCheckContract
             ->first();
         if (empty($requestUrlAccessInfo)) {
             return $this->errorJson("该链接拒绝访问", 99);
-        }
-        
-        $appConfig = config('lapi.app_config');
-        if (isset($appConfig['open_putlog']) 
-            && $appConfig['open_putlog'] == 1
-        ) {
-            $LapiAppLogCount = AppLogModel::where([
-                    ['app_id', '=', $app['app_id']],
-                    ['api', '=', $requestUrl],
-                    ['add_time', '>=', (time() - 1)],
-                ])
-                ->count();
-            if ($LapiAppLogCount > intval($requestUrlAccessInfo['max_request'])) {
-                return $this->errorJson("请求访问太快了", 99);
-            }
         }
     }
 
